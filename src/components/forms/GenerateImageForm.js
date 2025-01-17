@@ -6,13 +6,15 @@ import FormTitle from "../titles/FormTitle";
 import GenerateFormInputLabel from "../labels/GenerateFormInputLabels";
 import axios from "axios";
 import { useLoading } from "../../contexts/LoadingContext";
+import { useState } from "react";
 
 export default function GenerateImageForm({ onImageUrlChange }) {
   const { isLoading, setIsLoading } = useLoading();
+  const [error, setError] = useState(null);
   
   const validationSchema = Yup.object({
-    prompt: Yup.string().required("Please enter a prompt."),
-    negative_prompt: Yup.string().required("Please enter a negative prompt."),
+    prompt: Yup.string().trim().required("Please enter a prompt."),
+    negative_prompt: Yup.string().trim().required("Please enter a negative prompt."),
   });
 
   const initialValues = {
@@ -22,18 +24,19 @@ export default function GenerateImageForm({ onImageUrlChange }) {
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.post(
-        "https://df87-34-142-214-64.ngrok-free.app/generate-image",
+        "https://api-model-production.up.railway.app/generate-image",
         {
           prompt: values.prompt,
           negative_prompt: values.negative_prompt,
         }
       );
-      console.log(response);
       onImageUrlChange(response.data.image);
     } catch (error) {
       console.error("Error posting to the API:", error);
+      setError("An error occurred while generating the image. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +54,13 @@ export default function GenerateImageForm({ onImageUrlChange }) {
             className="bg-white p-10 rounded-3xl shadow-lg w-full max-w-lg border-4 border-yellow-400 transform hover:scale-105 transition-transform duration-300 ease-in-out"
             style={{ boxShadow: "10px 10px 0px #ffcb05" }}
           >
-            <FormTitle />
+            <FormTitle text={"🖼️ Text2Image 🖼️"} />
+
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                {error}
+              </div>
+            )}
 
             <div className="mb-6">
               <GenerateFormInputLabel text="✨ Prompt" />
