@@ -20,7 +20,7 @@ export default function GenerateImageForm({ onImageUrlChange }) {
   const handleSubmit = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/generate-image",
+        "https://6d3b-35-230-94-75.ngrok-free.app",
         {
           prompt: values.prompt,
           negative_prompt: values.negative_prompt,
