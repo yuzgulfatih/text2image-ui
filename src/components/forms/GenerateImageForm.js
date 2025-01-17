@@ -27,7 +27,7 @@ export default function GenerateImageForm({ onImageUrlChange }) {
     setError(null);
     try {
       const response = await axios.post(
-        "https://api-model-production.up.railway.app/generate-image",
+        "https://f7e1-34-87-119-45.ngrok-free.app/generate-image",
         {
           prompt: values.prompt,
           negative_prompt: values.negative_prompt,
