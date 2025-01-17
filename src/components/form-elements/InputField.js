@@ -7,6 +7,7 @@ export default function InputField({
   placeholder,
   color,
   boxShadowColor,
+  disabled,
 }) {
   return (
     <>
@@ -14,9 +15,12 @@ export default function InputField({
         type={type}
         id={id}
         name={name}
-        className={`w-full px-4 py-3 border-2 border-${color}-400 bg-${color}-50 rounded-xl shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-400`}
+        className={`w-full px-4 py-3 border-2 border-${color}-400 bg-${color}-50 rounded-xl shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-400 ${
+          disabled ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
         placeholder={placeholder}
         style={{ boxShadow: `5px 5px 0px ${boxShadowColor}` }}
+        disabled={disabled}
       />
       <ErrorMessage
         name={name}

@@ -5,8 +5,11 @@ import GenerateImageButton from "../buttons/GenerateImageButton";
 import FormTitle from "../titles/FormTitle";
 import GenerateFormInputLabel from "../labels/GenerateFormInputLabels";
 import axios from "axios";
+import { useLoading } from "../../contexts/LoadingContext";
 
 export default function GenerateImageForm({ onImageUrlChange }) {
+  const { isLoading, setIsLoading } = useLoading();
+  
   const validationSchema = Yup.object({
     prompt: Yup.string().required("Please enter a prompt."),
     negative_prompt: Yup.string().required("Please enter a negative prompt."),
@@ -18,6 +21,7 @@ export default function GenerateImageForm({ onImageUrlChange }) {
   };
 
   const handleSubmit = async (values) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "https://6d3b-35-230-94-75.ngrok-free.app/generate-image",
@@ -30,6 +34,8 @@ export default function GenerateImageForm({ onImageUrlChange }) {
       onImageUrlChange(response.data.image);
     } catch (error) {
       console.error("Error posting to the API:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,6 +62,7 @@ export default function GenerateImageForm({ onImageUrlChange }) {
                 color="yellow"
                 boxShadowColor="#ffd700"
                 placeholder="What's on your mind?"
+                disabled={isLoading}
               />
             </div>
 
@@ -68,11 +75,12 @@ export default function GenerateImageForm({ onImageUrlChange }) {
                 color="blue"
                 boxShadowColor="#00f"
                 placeholder="Anything to avoid?"
+                disabled={isLoading}
               />
             </div>
 
             <div className="flex items-center justify-center">
-              <GenerateImageButton />
+              <GenerateImageButton disabled={isLoading} />
             </div>
           </Form>
         )}
