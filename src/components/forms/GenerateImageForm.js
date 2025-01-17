@@ -24,7 +24,7 @@ export default function GenerateImageForm({ onImageUrlChange }) {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "https://6d3b-35-230-94-75.ngrok-free.app/generate-image",
+        "https://df87-34-142-214-64.ngrok-free.app/generate-image",
         {
           prompt: values.prompt,
           negative_prompt: values.negative_prompt,
