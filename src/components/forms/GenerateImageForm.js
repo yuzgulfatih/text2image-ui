@@ -11,10 +11,12 @@ import { useState } from "react";
 export default function GenerateImageForm({ onImageUrlChange }) {
   const { isLoading, setIsLoading } = useLoading();
   const [error, setError] = useState(null);
-  
+
   const validationSchema = Yup.object({
     prompt: Yup.string().trim().required("Please enter a prompt."),
-    negative_prompt: Yup.string().trim().required("Please enter a negative prompt."),
+    negative_prompt: Yup.string()
+      .trim()
+      .required("Please enter a negative prompt."),
   });
 
   const initialValues = {
@@ -27,7 +29,7 @@ export default function GenerateImageForm({ onImageUrlChange }) {
     setError(null);
     try {
       const response = await axios.post(
-        "https://f7e1-34-87-119-45.ngrok-free.app/generate-image",
+        "https://0d9a-34-87-148-219.ngrok-free.app/generate-image",
         {
           prompt: values.prompt,
           negative_prompt: values.negative_prompt,
@@ -36,7 +38,9 @@ export default function GenerateImageForm({ onImageUrlChange }) {
       onImageUrlChange(response.data.image);
     } catch (error) {
       console.error("Error posting to the API:", error);
-      setError("An error occurred while generating the image. Please try again.");
+      setError(
+        "An error occurred while generating the image. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
